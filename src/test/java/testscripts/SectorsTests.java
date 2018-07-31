@@ -1,10 +1,15 @@
+package testscripts;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
+import pages.AddSectorPage;
+import pages.LoginPage;
+import pages.MainMenuPage;
+import pages.SectorListPage;
 
 import java.io.File;
 import java.util.List;
@@ -42,19 +47,21 @@ public class SectorsTests {
     public void CreateNewSectors(){
 
         WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
 
-        // Login Page
-        executeLogin(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
 
-        // Menu Page
-        openSectors(driver); // click sectors
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        SectorListPage sectorListPage = mainMenuPage.openSector();
+        AddSectorPage addSectorPage = sectorListPage.clickAddSector();
+
+        String nameSector = UUID.randomUUID().toString().substring(1,30);
+        addSectorPage.name(nameSector);
 
         // Add Sector Page
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/ul/li/a")).click();
-
-        String nameSector = UUID.randomUUID().toString().substring(1,30); // substring
-        driver.findElement(By.name("name")).sendKeys(nameSector); // fill in the name field
 
         driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/input[1]")).click();
 
@@ -75,7 +82,9 @@ public class SectorsTests {
     public void DoNotAllowSameSectorTwice(){
 
         WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
 
         //Login Page
         executeLogin(driver);
