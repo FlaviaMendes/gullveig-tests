@@ -13,6 +13,7 @@ public class ValuationMeasuresTests {
         System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
 
         return new ChromeDriver();
+
     }
 
     public void executeLogin(WebDriver driver) {

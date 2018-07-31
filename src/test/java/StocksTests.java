@@ -4,8 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class StocksTests {
 
@@ -18,8 +24,8 @@ public class StocksTests {
 
     public void executeLogin(WebDriver driver) {
         WebElement username = driver.findElement(By.name("username"));
-        username.sendKeys("AdminFlavia");
-        driver.findElement(By.name("password")).sendKeys("Admin123");
+        username.sendKeys("admin");
+        driver.findElement(By.name("password")).sendKeys("1234qwer");
         driver.findElement(By.xpath("//*[@id=\"login-form\"]/div[3]/input")).click();
     }
 
@@ -53,14 +59,19 @@ public class StocksTests {
         openAddStocks(driver);
 
         //Stock Page
-        driver.findElement(By.name("ticker")).sendKeys("AMZN");
-        driver.findElement(By.name("company")).click();
-        driver.findElement(By.xpath("//*[@id=\"id_company\"]/option[2]")).click();
-        driver.findElement(By.name("_save")).click();
+        String ticker = UUID.randomUUID().toString();
+        driver.findElement(By.name("ticker")).sendKeys(ticker); // fill in the name field
+
+        Select company = new Select(driver.findElement(By.name("company")));
+        company.selectByVisibleText("Target Corp.");
+
+        driver.findElement(By.name("_save")).click(); // save new stock
 
         //Confirmation Page
-        String expectedMessage = "The stock \"AMZN (Amazon.com, Inc.)\" was added successfully.";
+        String expectedMessage = "The stock \"" + ticker + "\" was added successfully.";
         String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+
+        assertEquals(expectedMessage, displayedMessage);
 
         logoutPage(driver);
 
@@ -78,11 +89,42 @@ public class StocksTests {
         //Open Stock Page
         openStocks(driver);
 
-        //Edit Page
-        driver.findElement(By.xpath("//*[@id=\"result_list\"]/tbody/tr[1]/th/a")).click();
-        driver.findElement(By.name("ticker")).clear();
-        driver.findElement(By.name("ticker")).sendKeys("AMZN $1,710.63");
+        //Add Stock Page
+        openAddStocks(driver);
+
+        // Create new stock (Pre-condition)
+        String ticker = UUID.randomUUID().toString();
+        driver.findElement(By.name("ticker")).sendKeys(ticker);
+
+        String companyName = "Target Corp.";
+        Select company = new Select(driver.findElement(By.name("company")));
+        company.selectByVisibleText(companyName);
+
         driver.findElement(By.name("_save")).click();
+
+        // Find created stock
+        WebElement foundStock = null;
+        List<WebElement> createdStocks = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
+        for(WebElement stock : createdStocks) {
+            if (stock.getText().contains(ticker)){
+                foundStock = stock;
+            }
+        }
+        assertNotNull("Pre-condition stock not found!", foundStock);
+        foundStock.findElement(By.xpath("th/a")).click();
+
+        //Edit Page
+        String newTicker = UUID.randomUUID().toString();
+        driver.findElement(By.name("ticker")).clear();
+        driver.findElement(By.name("ticker")).sendKeys(newTicker);
+
+        driver.findElement(By.name("_save")).click();
+
+        //Confirmation Page
+        String expectedMessage = "The stock \"" + newTicker + " (" + companyName + ")\" was changed successfully.";
+        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+
+        assertEquals(expectedMessage, displayedMessage);
 
         //Logout
         logoutPage(driver);
@@ -101,8 +143,31 @@ public class StocksTests {
         //Open Stock Page
         openStocks(driver);
 
+        //Add Stock Page
+        openAddStocks(driver);
+
+        // Create new stock (Pre-condition)
+        String ticker = UUID.randomUUID().toString();
+        driver.findElement(By.name("ticker")).sendKeys(ticker);
+
+        String companyName = "Target Corp.";
+        Select company = new Select(driver.findElement(By.name("company")));
+        company.selectByVisibleText(companyName);
+
+        driver.findElement(By.name("_save")).click();
+
+        // Find created stock
+        WebElement foundStock = null;
+        List<WebElement> createdStocks = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
+        for(WebElement stock : createdStocks) {
+            if (stock.getText().contains(ticker)){
+                foundStock = stock;
+            }
+        }
+        assertNotNull("Pre-condition stock not found!", foundStock);
+        foundStock.findElement(By.xpath("th/a")).click();
+
         //Delete Page
-        driver.findElement(By.xpath("//*[@id=\"result_list\"]/tbody/tr[1]/th/a")).click();
         driver.findElement(By.xpath("//*[@id=\"stock_form\"]/div/div/p/a")).click();
 
         //Confirmation Page
@@ -113,8 +178,8 @@ public class StocksTests {
 
         driver.findElement(By.xpath("//*[@id=\"content\"]/form/div/input[2]")).click();
 
-        //Confirmation Delete
-        String expectedMessageDelete = "The stock \"AMZN (Amazon.com, Inc.)\" was deleted successfully.";
+        //Confirmation Delete "The stock \"" + newTicker + " (" + companyName + ")\"
+        String expectedMessageDelete = "The stock \"" + ticker + " (" + companyName + ")\" was deleted successfully.";
         String displayedMessageDelete = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
 
         Assert.assertEquals(expectedMessageDelete, displayedMessageDelete);
