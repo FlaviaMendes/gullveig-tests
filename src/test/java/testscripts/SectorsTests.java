@@ -6,10 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pages.AddSectorPage;
-import pages.LoginPage;
-import pages.MainMenuPage;
-import pages.SectorListPage;
+import pages.*;
 
 import java.io.File;
 import java.util.List;
@@ -44,7 +41,7 @@ public class SectorsTests {
     }
 
     @Test
-    public void CreateNewSectors(){
+    public void CreateNewSectors() {
 
         WebDriver driver = openBrowser();
 
@@ -55,157 +52,123 @@ public class SectorsTests {
         loginPage.password("1234qwer");
         MainMenuPage mainMenuPage = loginPage.executeLogin();
 
-        SectorListPage sectorListPage = mainMenuPage.openSector();
+        SectorListPage sectorListPage = mainMenuPage.openSectorPage();
         AddSectorPage addSectorPage = sectorListPage.clickAddSector();
 
-        String nameSector = UUID.randomUUID().toString().substring(1,30);
+        String nameSector = UUID.randomUUID().toString().substring(1, 30);
         addSectorPage.name(nameSector);
 
-        // Add Sector Page
+        sectorListPage = addSectorPage.clickSave();
 
-        driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/input[1]")).click();
-
-        //Confirm message
+        String displayedMessage = sectorListPage.getConfirmationMessage();
         String expectedMessage = "The sector \"" + nameSector + "\" was added successfully.";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        Assert.assertEquals(expectedMessage, displayedMessage);
 
-        Assert.assertEquals(expectedMessage,displayedMessage);
+        driver.quit();
 
-        //Back to home
-        driver.findElement(By.xpath("//*[@id=\"container\"]/div[2]/a[1]")).click();
-
-        //Logout
-        logoutPage(driver);
     }
 
     @Test
-    public void DoNotAllowSameSectorTwice(){
+    public void DoNotAllowSameSectorTwice() {
 
         WebDriver driver = openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
 
-        //Login Page
-        executeLogin(driver);
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
 
-        //Menu Page
-        openSectors(driver);
+        SectorListPage sectorListPage = mainMenuPage.openSectorPage();
+        AddSectorPage addSectorPage = sectorListPage.clickAddSector();
 
-        //Add Sector Existing
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/ul/li/a")).click();
+        String nameSector = UUID.randomUUID().toString().substring(1, 30);
+        addSectorPage.name(nameSector);
+        sectorListPage = addSectorPage.clickSave();
 
-        driver.findElement(By.name("name")).sendKeys("Services");
-        driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/input[1]")).click();
+        sectorListPage.clickAddSector();
+        addSectorPage.name(nameSector);
+        sectorListPage = addSectorPage.clickSave();
 
-        //Msg Error
-        String expectedMessageError = "Sector with this Name already exists.";
-        String displayedMessageError = driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/fieldset/div/ul/li")).getText();
+        String displayedErrorMessage = sectorListPage.getConfirmationErrorMessage();
+        String expectedErrorMessage = driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/fieldset/div/ul/li")).getText();
+        Assert.assertEquals(expectedErrorMessage, displayedErrorMessage);
 
-        Assert.assertEquals(expectedMessageError, displayedMessageError);
-
-        //Logout
-        logoutPage(driver);
-    }
-
-    @Test
-    public void EditSectors(){
-
-        WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
-
-        // Login Page
-        executeLogin(driver);
-
-        // Menu Page
-        openSectors(driver); // click sectors
-
-       // Create new sector (Pre-condition - Add Sector Page)
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/ul/li/a")).click();
-
-        String nameSector = UUID.randomUUID().toString().substring(1,30);
-        driver.findElement(By.name("name")).sendKeys(nameSector);
-
-        driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/input[1]")).click();
-
-        //Find created sector
-        WebElement foundSector = null;
-        List<WebElement> createdSector = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
-        for(WebElement sector : createdSector){
-            if(sector.getText().contains(nameSector)){
-                foundSector = sector;
-            }
-        }
-        assertNotNull("Pre-condition sector not found!", foundSector);
-        foundSector.findElement(By.xpath("th/a")).click();
-
-        //Edit Page
-        String newSector = UUID.randomUUID().toString().substring(1,30);
-        driver.findElement(By.name("name")).clear();
-        driver.findElement(By.name("name")).sendKeys(newSector);
-
-        driver.findElement(By.name("_save")).click();
-
-       //Confirmation Page
-        String expectedMessage = "The sector \"" + newSector + "\" was changed successfully.";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
-
-        Assert.assertEquals(expectedMessage, displayedMessage);
-
-        //Logout
-        logoutPage(driver);
+        driver.quit();
 
     }
 
     @Test
-    public void DeleteSectors(){
+    public void EditSectors() {
 
         WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
 
-        // Login Page
-        executeLogin(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
 
-        // Menu Page
-        openSectors(driver); // click sectors
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
 
-        // Create new sector (Pre-condition - Add Sector Page)
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/ul/li/a")).click();
+        SectorListPage sectorListPage = mainMenuPage.openSectorPage();
+        AddSectorPage addSectorPage = sectorListPage.clickAddSector();
 
-        String nameSector = UUID.randomUUID().toString().substring(1,30);
-        driver.findElement(By.name("name")).sendKeys(nameSector);
+        String nameSector = UUID.randomUUID().toString().substring(1, 30);
+        addSectorPage.name(nameSector);
 
-        driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/input[1]")).click();
+        sectorListPage = addSectorPage.clickSave();
 
-        //Find created sector
-        WebElement foundSector = null;
-        List<WebElement> createdSector = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
-        for(WebElement sector : createdSector){
-            if(sector.getText().contains(nameSector)){
-                foundSector = sector;
-            }
-        }
-        assertNotNull("Pre-condition stock not found!", foundSector);
-        foundSector.findElement(By.xpath("th/a")).click();
+        EditSectorsPage editSectorsPage = sectorListPage.clickSectorByName(nameSector);
 
-        //Delete Page
-        driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/p/a")).click();
+        String newSector = UUID.randomUUID().toString().substring(1, 30);
+        editSectorsPage.newName(nameSector);
 
-        //Confirmation Page
-        String expectedMessage = "Are you sure?";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText();
+        sectorListPage = editSectorsPage.clickSave();
 
-        Assert.assertEquals(expectedMessage, displayedMessage);
+        String displayedEditMessage = sectorListPage.getConfirmationEditMessage();
+        String expectedEditMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        Assert.assertEquals(expectedEditMessage, displayedEditMessage);
 
-        driver.findElement(By.xpath("//*[@id=\"content\"]/form/div/input[2]")).click();
+        driver.quit();
 
-        //Confirmation Delete
-        String expectedMessageDelete = "The sector \"" + nameSector + "\" was deleted successfully.";
-        String displayedMessageDelete = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+    }
 
-        Assert.assertEquals(expectedMessageDelete, displayedMessageDelete);
 
-        //Logout
-        logoutPage(driver);
+    @Test
+    public void DeleteSectors() {
+
+        WebDriver driver = openBrowser();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        SectorListPage sectorListPage = mainMenuPage.openSectorPage();
+        AddSectorPage addSectorPage = sectorListPage.clickAddSector();
+
+        String nameSector = UUID.randomUUID().toString().substring(1, 30);
+        addSectorPage.name(nameSector);
+
+        sectorListPage = addSectorPage.clickSave();
+
+        sectorListPage.clickSectorByName(nameSector);
+        sectorListPage.clickDeleteSector(nameSector);
+
+        String displayedAreYouSureDeleteMessage = sectorListPage.getAreYouSureDeleteMessage();
+        String expectedAreYouSureDeleteMessage = driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText();
+        Assert.assertEquals(expectedAreYouSureDeleteMessage, displayedAreYouSureDeleteMessage);
+
+        sectorListPage.clickYesIamSure();
+
+        String displayedConfirmationDeleteMessage = sectorListPage.getConfirmationDeleteMessage();
+        String expectedConfirmationDeleteMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        Assert.assertEquals(expectedConfirmationDeleteMessage, displayedConfirmationDeleteMessage);
+
+        driver.quit();
+
     }
 }

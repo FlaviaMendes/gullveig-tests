@@ -11,7 +11,7 @@ public class MainMenuPage {
         browser = injectedBrowser;
     }
 
-    public SectorListPage openSector() {
+    public SectorListPage openSectorPage() {
         browser.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[3]/th/a")).click();
         return new SectorListPage(this.browser);
     }
