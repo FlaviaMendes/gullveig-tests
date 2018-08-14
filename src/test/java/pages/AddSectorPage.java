@@ -21,4 +21,20 @@ public class AddSectorPage {
     }
 
 
+    public void clearNameSector() {
+        this.browser.findElement(By.name("name")).clear();
+
+    }
+
+    public AddSectorPage clickDeleteSector(String nameSector) {
+        this.browser.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/p")).click();
+        return new AddSectorPage(this.browser);
+
+    }
+
+    public ConfirmationDeletePage clickDelete() {
+        this.browser.findElement(By.xpath("//*[@id=\"content\"]/form/div/input[2]")).click();
+        return new ConfirmationDeletePage(this.browser);
+
+    }
 }

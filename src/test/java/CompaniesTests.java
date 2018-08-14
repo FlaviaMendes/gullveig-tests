@@ -4,10 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
+import pages.*;
 
 import java.io.File;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -22,216 +21,223 @@ public class CompaniesTests {
         return new ChromeDriver();
     }
 
-    public void executeLogin(WebDriver driver) {
-        WebElement username = driver.findElement(By.name("username"));
-        username.sendKeys("admin");
-        driver.findElement(By.name("password")).sendKeys("1234qwer");
-        driver.findElement(By.xpath("//*[@id=\"login-form\"]/div[3]/input")).click();
+    @Test
+    public void CreateNewCompanies() {
+
+        WebDriver driver = openBrowser();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        CompaniesListPage companiesListPage = mainMenuPage.openCompaniesPage();
+        AddCompaniesPage addCompaniesPage = companiesListPage.clickAddCompanies();
+
+        String nameCompanies = UUID.randomUUID().toString().substring(1, 30);
+        addCompaniesPage.name(nameCompanies);
+
+        String siteCompanies = UUID.randomUUID().toString().substring(1, 30);
+        addCompaniesPage.site(siteCompanies);
+
+        String aboutCompanies = UUID.randomUUID().toString();
+        addCompaniesPage.about(aboutCompanies);
+
+        addCompaniesPage.selectSectorByName("Financial");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        String displayedMessage = companiesListPage.getConfirmationMessage();
+        String expectedMessage = "The company \"" + nameCompanies + "\" was added successfully.";
+        Assert.assertEquals(expectedMessage, displayedMessage);
+
+        driver.quit();
+
     }
 
-    public void openCompanies(WebDriver driver) {
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[1]/th/a")).click();
+    @Test
+    public void DoNotAllowSameCompanyTwice(){
+
+        WebDriver driver = openBrowser();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        CompaniesListPage companiesListPage = mainMenuPage.openCompaniesPage();
+        AddCompaniesPage addCompaniesPage = companiesListPage.clickAddCompanies();
+
+        String nameCompanies = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.name(nameCompanies);
+
+        String siteCompanies = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.site(siteCompanies);
+
+        String aboutCompanies = UUID.randomUUID().toString();
+        addCompaniesPage.about(aboutCompanies);
+
+        addCompaniesPage.selectSectorByName("Financial");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        companiesListPage.clickAddCompanies();
+        addCompaniesPage.name(nameCompanies);
+
+        String site = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.site(site);
+
+        String about = UUID.randomUUID().toString();
+        addCompaniesPage.about(about);
+
+        addCompaniesPage.selectSectorByName("Financial");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        String displayedErrorMessage = companiesListPage.getConfirmationErrorMessage();
+        String expectedErrorMessage = "Please correct the error below.";
+        Assert.assertEquals(expectedErrorMessage, displayedErrorMessage);
+
+        driver.quit();
+
     }
 
-    public void openAddCompany(WebDriver driver){
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/ul/li/a")).click();
+    @Test
+    public void EditCompanies(){
+
+        WebDriver driver = openBrowser();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        CompaniesListPage companiesListPage = mainMenuPage.openCompaniesPage();
+        AddCompaniesPage addCompaniesPage = companiesListPage.clickAddCompanies();
+
+        String nameCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.name(nameCompany);
+
+        String siteCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.site(siteCompany);
+
+        String aboutCompany = UUID.randomUUID().toString();
+        addCompaniesPage.about(aboutCompany);
+
+        addCompaniesPage.selectSectorByName("Test");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        companiesListPage.clickCompanyByName(nameCompany);
+
+        addCompaniesPage.clearNameCompany();
+        String newNameCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.name(newNameCompany);
+
+        addCompaniesPage.site(siteCompany);
+        addCompaniesPage.about(aboutCompany);
+        addCompaniesPage.selectSectorByName("Test");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        String displayedMessage = companiesListPage.getConfirmationEditMessage();
+        String expectedMessage = "The company \"" + newNameCompany + "\" was changed successfully.";
+        Assert.assertEquals(expectedMessage, displayedMessage);
+
+        driver.quit();
+
+
     }
 
-    public void logoutPage(WebDriver driver) {
-        driver.findElement(By.xpath("//*[@id=\"user-tools\"]/a[3]")).click();
+    @Test
+    public void EditSector(){
+
+        WebDriver driver = openBrowser();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
+
+        CompaniesListPage companiesListPage = mainMenuPage.openCompaniesPage();
+        AddCompaniesPage addCompaniesPage = companiesListPage.clickAddCompanies();
+
+        String nameCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.name(nameCompany);
+
+        String siteCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.site(siteCompany);
+
+        String aboutCompany = UUID.randomUUID().toString();
+        addCompaniesPage.about(aboutCompany);
+
+        addCompaniesPage.selectSectorByName("Test");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        companiesListPage.clickCompanyByName(nameCompany);
+        addCompaniesPage.selectNewSectorByName("Financial");
+
+        addCompaniesPage.clickSaveCompanies();
+
+        String displayedEditSectorMessage = companiesListPage.getConfirmationEditSectorMessage();
+        String expectedEditSectorMessage = "The company \"" + nameCompany + "\" was changed successfully.";
+        Assert.assertEquals(expectedEditSectorMessage, displayedEditSectorMessage);
 
         driver.quit();
     }
 
     @Test
-    public void CreateNewCompanies(){
+    public void DeleteCompanies(){
 
         WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
 
-        // Login Page
-        executeLogin(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
 
-        //List Page
-        openCompanies(driver);
+        loginPage.username("admin");
+        loginPage.password("1234qwer");
+        MainMenuPage mainMenuPage = loginPage.executeLogin();
 
-        //Add Page
-        openAddCompany(driver);
+        CompaniesListPage companiesListPage = mainMenuPage.openCompaniesPage();
+        AddCompaniesPage addCompaniesPage = companiesListPage.clickAddCompanies();
 
-        //Company Page
-        String nameCompany = UUID.randomUUID().toString();// generate a code and transform into string
-        driver.findElement(By.name("name")).sendKeys(nameCompany);
+        String nameCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.name(nameCompany);
 
-        String siteCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("site")).sendKeys(siteCompany);
+        String siteCompany = UUID.randomUUID().toString().substring(1,30);
+        addCompaniesPage.site(siteCompany);
 
         String aboutCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("about")).sendKeys(aboutCompany);
+        addCompaniesPage.about(aboutCompany);
 
-        Select sector = new Select(driver.findElement(By.name("sector")));
-        sector.selectByVisibleText("Financial");
+        addCompaniesPage.selectSectorByName("Test");
 
-        driver.findElement(By.xpath("//*[@id=\"company_form\"]/div/div/input[1]")).click();
+        addCompaniesPage.clickSaveCompanies();
 
-        //Confirmation Page
-        String expectedMessage = "The company \"" + nameCompany + "\" was added successfully.";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        companiesListPage.clickCompanyByName(nameCompany);
+        addCompaniesPage.clickDeleteCompany();
 
-        assertEquals(expectedMessage, displayedMessage);
+        String displayedAreYouSureDeleteMessage = companiesListPage.getAreYouSureDeleteMessage();
+        String expectedAreYouSureDeleteMessage = "Are you sure?";
+        Assert.assertEquals(expectedAreYouSureDeleteMessage, displayedAreYouSureDeleteMessage);
 
+        companiesListPage.clickYesIamSure();
 
-        //Logout
-        logoutPage(driver);
+        String displayedConfirmationDeleteMessage = companiesListPage.getConfirmationDeleteMessage();
+        String expectedConfirmationDeleteMessage = "The company \"" + nameCompany + "\" was deleted successfully.";
+        Assert.assertEquals(expectedConfirmationDeleteMessage, displayedConfirmationDeleteMessage);
 
+        driver.quit();
     }
 
-    @Test
-    public void EditNameCompany(){
 
-        WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
-
-        // Login Page
-        executeLogin(driver);
-
-        //List Page
-        openCompanies(driver);
-
-        //Add Page
-        openAddCompany(driver);
-
-        //Company Page
-        String nameCompany = UUID.randomUUID().toString();// generate a code and transform into string
-        driver.findElement(By.name("name")).sendKeys(nameCompany);
-
-        String siteCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("site")).sendKeys(siteCompany);
-
-        String aboutCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("about")).sendKeys(aboutCompany);
-
-        Select sector = new Select(driver.findElement(By.name("sector")));
-        sector.selectByVisibleText("Financial");
-
-        driver.findElement(By.xpath("//*[@id=\"company_form\"]/div/div/input[1]")).click();
-
-        //Edit Page
-        driver.findElement(By.xpath("//*[@id=\"result_list\"]/tbody/tr[1]/th/a")).click();
-
-        driver.findElement(By.name("site")).clear();
-        driver.findElement(By.name("site")).sendKeys("www.amazon.com");
-
-        driver.findElement(By.name("_save")).click();
-
-        // Find created company
-        WebElement foundStock = null;
-        List<WebElement> createdCompany = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
-        for(WebElement stock : createdCompany) {
-            if (stock.getText().contains(nameCompany)){
-                foundStock = stock;
-            }
-        }
-        assertNotNull("Pre-condition stock not found!", foundStock);
-        foundStock.findElement(By.xpath("th/a")).click();
-
-        //Edit Page
-        String newCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("name")).clear();
-        driver.findElement(By.name("name")).sendKeys(newCompany);
-
-        driver.findElement(By.name("_save")).click();
-
-        //Confirmation Page
-        String expectedMessage = "The company \"" + newCompany + "\" was changed successfully.";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
-
-        assertEquals(expectedMessage, displayedMessage);
-
-        logoutPage(driver);
-
-    }
-
-    @Test
-    public void EditSectorCompany(){
-
-        WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
-
-        // Login Page
-        executeLogin(driver);
-
-        //List Page
-        openCompanies(driver);
-
-        //Add Page
-        openAddCompany(driver);
-
-        //Company Page
-        String nameCompany = UUID.randomUUID().toString();// generate a code and transform into string
-        driver.findElement(By.name("name")).sendKeys(nameCompany);
-
-        String siteCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("site")).sendKeys(siteCompany);
-
-        String aboutCompany = UUID.randomUUID().toString();
-        driver.findElement(By.name("about")).sendKeys(aboutCompany);
-
-        Select sector = new Select(driver.findElement(By.name("sector")));
-        sector.selectByVisibleText("Financial");
-
-        driver.findElement(By.xpath("//*[@id=\"company_form\"]/div/div/input[1]")).click();
-
-        // Find created company
-        WebElement foundStock = null;
-        List<WebElement> createdCompany = driver.findElements(By.xpath("//*[@id=\"result_list\"]/tbody/tr"));
-        for(WebElement stock : createdCompany) {
-            if (stock.getText().contains(nameCompany)){
-                foundStock = stock;
-            }
-        }
-        assertNotNull("Pre-condition stock not found!", foundStock);
-        foundStock.findElement(By.xpath("th/a")).click();
-
-        //Edit Page
-        Select newSector = new Select(driver.findElement(By.name("sector")));
-        newSector.selectByVisibleText("Services");
-
-        driver.findElement(By.name("_save")).click();
-
-        //Confirmation Page
-        String expectedMessage = "The company \"" + newSector + "\" was changed successfully.";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
-
-        assertEquals(expectedMessage, displayedMessage);
-
-        logoutPage(driver);
-
-    }
-
-   /* @Test // mudar o teste :Cannot delete company, outra q pode ser cncelada
-    public void DeleteCompany(){
-
-        WebDriver driver = openBrowser();
-        driver.get("http://127.0.0.1:8000/admin/");
-
-        // Login Page
-        executeLogin(driver);
-
-        //List Page
-        openCompanies(driver);
-
-        //Delete Page
-        driver.findElement(By.xpath("//*[@id=\"result_list\"]/tbody/tr[1]/th/a")).click();
-
-        driver.findElement(By.xpath("//*[@id=\"company_form\"]/div/div/p/a")).click();
-
-        String expectedMessage = "Are you sure?";
-        String displayedMessage = driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText();
-
-        Assert.assertEquals(expectedMessage, displayedMessage);
-
-        driver.findElement(By.xpath("//*[@id=\"content\"]/form/div/input[2]")).click();
-
-        logoutPage(driver);
-    }*/
 }

@@ -8,11 +8,16 @@ public class MainMenuPage {
     private final WebDriver browser;
 
     public MainMenuPage(WebDriver injectedBrowser) {
-        browser = injectedBrowser;
+        this.browser = injectedBrowser;
     }
 
     public SectorListPage openSectorPage() {
-        browser.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[3]/th/a")).click();
+        this.browser.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[3]/th/a")).click();
         return new SectorListPage(this.browser);
+    }
+
+    public CompaniesListPage openCompaniesPage() {
+        this.browser.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[1]/th/a")).click();
+        return new CompaniesListPage(this.browser);
     }
 }

@@ -50,12 +50,6 @@ public class SectorListPage {
 
     }
 
-    public SectorListPage clickDeleteSector(String nameSector) {
-        this.browser.findElement(By.xpath("//*[@id=\"sector_form\"]/div/div/p")).click();
-        return new SectorListPage(this.browser);
-
-    }
-
     public String getAreYouSureDeleteMessage() {
         return this.browser.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText();
     }

@@ -23,23 +23,6 @@ public class SectorsTests {
         return new ChromeDriver();
     }
 
-    public void executeLogin(WebDriver driver) {
-        WebElement username = driver.findElement(By.name("username"));
-        username.sendKeys("admin");
-        driver.findElement(By.name("password")).sendKeys("1234qwer");
-        driver.findElement(By.xpath("//*[@id=\"login-form\"]/div[3]/input")).click();
-    }
-
-    public void openSectors(WebDriver driver) {
-        driver.findElement(By.xpath("//*[@id=\"content-main\"]/div[2]/table/tbody/tr[3]/th/a")).click();
-    }
-
-    public void logoutPage(WebDriver driver) {
-        driver.findElement(By.xpath("//*[@id=\"user-tools\"]/a[3]")).click();
-
-        driver.quit();
-    }
-
     @Test
     public void CreateNewSectors() {
 
@@ -68,6 +51,7 @@ public class SectorsTests {
 
     }
 
+
     @Test
     public void DoNotAllowSameSectorTwice() {
 
@@ -92,7 +76,7 @@ public class SectorsTests {
         sectorListPage = addSectorPage.clickSave();
 
         String displayedErrorMessage = sectorListPage.getConfirmationErrorMessage();
-        String expectedErrorMessage = driver.findElement(By.xpath("//*[@id=\"sector_form\"]/div/fieldset/div/ul/li")).getText();
+        String expectedErrorMessage = "Sector with this Name already exists.";
         Assert.assertEquals(expectedErrorMessage, displayedErrorMessage);
 
         driver.quit();
@@ -119,15 +103,16 @@ public class SectorsTests {
 
         sectorListPage = addSectorPage.clickSave();
 
-        EditSectorsPage editSectorsPage = sectorListPage.clickSectorByName(nameSector);
+        sectorListPage.clickSectorByName(nameSector);
 
-        String newSector = UUID.randomUUID().toString().substring(1, 30);
-        editSectorsPage.newName(nameSector);
+        addSectorPage.clearNameSector();
+        String newNameSector = UUID.randomUUID().toString().substring(1, 30);
+        addSectorPage.name(newNameSector);
 
-        sectorListPage = editSectorsPage.clickSave();
+        addSectorPage.clickSave();
 
         String displayedEditMessage = sectorListPage.getConfirmationEditMessage();
-        String expectedEditMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        String expectedEditMessage =  "The sector \"" + newNameSector + "\" was changed successfully.";
         Assert.assertEquals(expectedEditMessage, displayedEditMessage);
 
         driver.quit();
@@ -156,16 +141,16 @@ public class SectorsTests {
         sectorListPage = addSectorPage.clickSave();
 
         sectorListPage.clickSectorByName(nameSector);
-        sectorListPage.clickDeleteSector(nameSector);
+        addSectorPage.clickDeleteSector(nameSector);
 
         String displayedAreYouSureDeleteMessage = sectorListPage.getAreYouSureDeleteMessage();
-        String expectedAreYouSureDeleteMessage = driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText();
+        String expectedAreYouSureDeleteMessage = "Are you sure?";
         Assert.assertEquals(expectedAreYouSureDeleteMessage, displayedAreYouSureDeleteMessage);
 
         sectorListPage.clickYesIamSure();
 
         String displayedConfirmationDeleteMessage = sectorListPage.getConfirmationDeleteMessage();
-        String expectedConfirmationDeleteMessage = driver.findElement(By.xpath("//*[@id=\"container\"]/ul/li")).getText();
+        String expectedConfirmationDeleteMessage = "The sector \"" + nameSector + "\" was deleted successfully.";
         Assert.assertEquals(expectedConfirmationDeleteMessage, displayedConfirmationDeleteMessage);
 
         driver.quit();
