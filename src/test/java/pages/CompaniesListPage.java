@@ -13,6 +13,7 @@ public class CompaniesListPage {
     private final WebDriver browser;
 
     public CompaniesListPage(WebDriver injectedBrowser) {
+
         this.browser = injectedBrowser;
     }
 

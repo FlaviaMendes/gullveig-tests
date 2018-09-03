@@ -6,9 +6,11 @@
 
     <groupId>gullveig</groupId>
     <artifactId>gullveig-tests</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
-<dependencies>
+
+    <dependencies>
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>

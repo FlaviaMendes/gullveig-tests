@@ -73,6 +73,7 @@ public class SectorsTests {
 
         sectorListPage.clickAddSector();
         addSectorPage.name(nameSector);
+
         sectorListPage = addSectorPage.clickSave();
 
         String displayedErrorMessage = sectorListPage.getConfirmationErrorMessage();
@@ -109,7 +110,7 @@ public class SectorsTests {
         String newNameSector = UUID.randomUUID().toString().substring(1, 30);
         addSectorPage.name(newNameSector);
 
-        addSectorPage.clickSave();
+        sectorListPage = addSectorPage.clickSave();
 
         String displayedEditMessage = sectorListPage.getConfirmationEditMessage();
         String expectedEditMessage =  "The sector \"" + newNameSector + "\" was changed successfully.";

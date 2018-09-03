@@ -11,10 +11,12 @@ public class AddCompaniesPage {
     private final WebDriver browser;
 
     public AddCompaniesPage(WebDriver injectedBrowser) {
+
         this.browser = injectedBrowser;
     }
 
     public void name(String nameToFill) {
+
         this.browser.findElement(By.name("name")).sendKeys(nameToFill);
     }
 
@@ -32,8 +34,9 @@ public class AddCompaniesPage {
     }
 
 
-    public void clickSaveCompanies() {
+    public CompaniesListPage clickSaveCompanies() {
         this.browser.findElement(By.name("_save")).click();
+        return new CompaniesListPage(this.browser);
     }
 
     public void clearNameCompany() {
