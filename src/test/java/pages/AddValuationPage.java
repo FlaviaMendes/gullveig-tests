@@ -2,7 +2,12 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class AddValuationPage {
 
@@ -51,15 +56,35 @@ public class AddValuationPage {
         this.browser.findElement(By.xpath("//*[@id=\"calendarlink0\"]/span")).click();
     }
 
-    public void clickToChoseDay() {
+    /*public void clickToChoseDay() {
         this.browser.findElement(By.xpath("//*[@id=\"calendarin0\"]/table/tbody/tr[5]/td[5]/a")).click();
-    }
+    }*/
 
-    public void clickToChoseDay(int dia) {
-        // TODO implmentar o click pelo dia passado na parametro
+    public AddValuationPage clickToChoseDay(String day) {
+        WebElement foundDay = null;
+        // List<WebElement> columns =this.browser.findElements(By.xpath("//*[@id=\"calendarin0\"]/table[1]/tbody/tr/td"));
+
+        WebElement calendarTable = this.browser.findElement(By.xpath("//*[@id=\"calendarin0\"]/table[1]"));
+        List<WebElement> columns = calendarTable.findElements(By.tagName("td"));
+
+        for(WebElement cell : columns){
+            if(cell.getText().equals(day)){
+                cell.click();
+            }
+        }
+
+        return new AddValuationPage(this.browser);
+
     }
 
     public void clickNextMonth() {
         this.browser.findElement(By.xpath("//*[@id=\"calendarbox0\"]/div[1]/a[2]")).click();
+    }
+
+    public String getDate() {
+
+        String date = this.browser.findElement(By.xpath("//*[@id=\"id_date\"]")).getAttribute("value");
+        return date;
+
     }
 }

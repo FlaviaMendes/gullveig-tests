@@ -87,20 +87,24 @@ public class ValuationTests {
         String source = "Seeking Alpha - https://seekingalpha.com";
         addValuationPage.selectSourceValuationByName(source);
 
-        String value = "0,5";
+        String value = "0.5";
         addValuationPage.value(value);
 
         addValuationPage.clickCalender();
         addValuationPage.clickNextMonth();
-        addValuationPage.clickToChoseDay();
+
+        String day = "16";
+        addValuationPage.clickToChoseDay(day);
+
+        String chosenDate = addValuationPage.getDate();
 
         valuationListPage = addValuationPage.clickSaveValuation();
 
-       /* String expectedTicker = stock.substring(0, stock.indexOf(' '));
+        String expectedTicker = stock.substring(0, stock.indexOf(' '));
         String expectedSourceName = source.split(" - ")[0];
         String displayedMessage = valuationListPage.getConfirmationMessage();
-        String expectedMessage = "The valuation \"" + measure + " - " + expectedTicker + " - " + day +  " - " + value + " (" + expectedSourceName + ")\" was chaged successfully.";
-        Assert.assertEquals(expectedMessage, displayedMessage);*/
+        String expectedMessage = "The valuation \"" + measure + " - " + expectedTicker + " - " + chosenDate +  " - " + value + " (" + expectedSourceName + ")\" was added successfully.";
+        Assert.assertEquals(expectedMessage, displayedMessage);
 
         driver.quit();
 
