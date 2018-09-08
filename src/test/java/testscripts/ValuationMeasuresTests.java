@@ -1,5 +1,7 @@
 package testscripts;
 
+import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -13,18 +15,10 @@ import java.util.UUID;
 
 public class ValuationMeasuresTests {
 
-    public WebDriver openBrowser() {
-        File file = new File("chromedriver.exe");
-        System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-
-    }
-
     @Test
     public void CreateNewValidationMeasures() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -52,7 +46,7 @@ public class ValuationMeasuresTests {
     @Test
     public void DoNotAllowSameValuationMeasureTwice() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -85,7 +79,7 @@ public class ValuationMeasuresTests {
     @Test
     public void EditValuationMeasures() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -120,7 +114,7 @@ public class ValuationMeasuresTests {
     @Test
     public void DeletetValuationMeasures() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();

@@ -1,5 +1,6 @@
 package testscripts;
 
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -11,17 +12,10 @@ import java.util.UUID;
 
 public class InformationSourcesListTest {
 
-    public WebDriver openBrowser() {
-        File file = new File("chromedriver.exe");
-        System.setProperty("webriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-    }
-
     @Test
     public void CreateNewInformationSource() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -55,7 +49,7 @@ public class InformationSourcesListTest {
     @Test
     public void DoNotAllowSameInformationSourceTwice() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -101,7 +95,7 @@ public class InformationSourcesListTest {
     @Test
     public void EditInformationSource() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -143,7 +137,7 @@ public class InformationSourcesListTest {
     @Test
     public void DeleteInformationSource() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();

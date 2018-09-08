@@ -1,5 +1,6 @@
 package testscripts;
 
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -18,17 +19,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class StocksTests {
 
-    public WebDriver openBrowser() {
-        File file = new File("chromedriver.exe");
-        System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-    }
-
     @Test
     public void CreateNewStocks(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -58,7 +52,7 @@ public class StocksTests {
 
     @Test
     public void DoNotAllowSameStockTwice() {
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -95,7 +89,7 @@ public class StocksTests {
 
     @Test
     public void EditTickerStock(){
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -133,7 +127,7 @@ public class StocksTests {
 
     @Test
     public void EditCompanyStock(){
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -171,7 +165,7 @@ public class StocksTests {
 
     @Test
     public void DeleteStock(){
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();

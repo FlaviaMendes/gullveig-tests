@@ -1,5 +1,6 @@
 package testscripts;
 
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -10,19 +11,10 @@ import java.io.File;
 
 public class ValuationTests {
 
-    public WebDriver openBrowser(){
-
-        File file = new File("chromedriver.exe");
-        System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-
-    }
-
     @Test
     public void CreateNewValuationFillingDate(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -66,7 +58,7 @@ public class ValuationTests {
     @Test
     public void CreateNewValuationChooseDate(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();

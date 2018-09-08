@@ -1,5 +1,6 @@
 package testscripts;
 
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -16,17 +17,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class SectorsTests {
 
-    public WebDriver openBrowser() {
-        File file = new File("chromedriver.exe");
-        System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-    }
-
     @Test
     public void CreateNewSectors() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -55,7 +49,7 @@ public class SectorsTests {
     @Test
     public void DoNotAllowSameSectorTwice() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -87,7 +81,7 @@ public class SectorsTests {
     @Test
     public void EditSectors() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -124,7 +118,7 @@ public class SectorsTests {
     @Test
     public void DeleteSectors() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
