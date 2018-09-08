@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import pages.*;
 import java.io.File;
 import java.util.UUID;
@@ -12,11 +13,36 @@ import java.util.UUID;
 
 public class CompaniesTests {
 
-    public WebDriver openBrowser() {
+    private enum Browser {
+        FIREFOX, CHROME
+    }
+
+    public FirefoxDriver openFirefox() {
+        File file = new File("geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver", file.getAbsolutePath());
+
+        return new FirefoxDriver();
+    }
+
+    public WebDriver openChrome() {
         File file = new File("chromedriver.exe");
         System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
 
         return new ChromeDriver();
+    }
+
+    public WebDriver openBrowser() {
+        String browserEnv = System.getenv("browser");
+        Browser browserChosen = Browser.valueOf(browserEnv.toUpperCase());
+
+        switch (browserChosen) {
+            case CHROME:
+                return openChrome();
+            case FIREFOX:
+                return openFirefox();
+            default:
+                return openChrome();
+        }
     }
 
     @Test
