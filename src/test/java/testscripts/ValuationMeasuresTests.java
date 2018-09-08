@@ -2,6 +2,7 @@ package testscripts;
 
 import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 import helpers.BrowserHelper;
+import helpers.UserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -20,12 +21,7 @@ public class ValuationMeasuresTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationMeasuresListPage valuationMeasuresListPage = mainMenuPage.openValuationMeasuresPage();
         AddValuationMeasuresPage addValuationMeasuresPage = valuationMeasuresListPage.clickAddValuationMeasures();
@@ -48,12 +44,7 @@ public class ValuationMeasuresTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationMeasuresListPage valuationMeasuresListPage = mainMenuPage.openValuationMeasuresPage();
         AddValuationMeasuresPage addValuationMeasuresPage = valuationMeasuresListPage.clickAddValuationMeasures();
@@ -81,12 +72,7 @@ public class ValuationMeasuresTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationMeasuresListPage valuationMeasuresListPage = mainMenuPage.openValuationMeasuresPage();
         AddValuationMeasuresPage addValuationMeasuresPage = valuationMeasuresListPage.clickAddValuationMeasures();
@@ -116,12 +102,7 @@ public class ValuationMeasuresTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationMeasuresListPage valuationMeasuresListPage = mainMenuPage.openValuationMeasuresPage();
         AddValuationMeasuresPage addValuationMeasuresPage = valuationMeasuresListPage.clickAddValuationMeasures();
@@ -148,6 +129,7 @@ public class ValuationMeasuresTests {
 
 
     }
+
 }
 
 

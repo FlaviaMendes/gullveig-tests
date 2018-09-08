@@ -1,6 +1,7 @@
 package testscripts;
 
 import helpers.BrowserHelper;
+import helpers.UserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -17,12 +18,7 @@ public class InformationSourcesListTest {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         InformationSourcesPage informationSourcesPage = mainMenuPage.openInformationSource();
         AddInformationSourcePage addInformationSource = informationSourcesPage.clickAddInformationSource();
@@ -51,12 +47,7 @@ public class InformationSourcesListTest {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         InformationSourcesPage informationSourcesPage = mainMenuPage.openInformationSource();
         AddInformationSourcePage addInformationSourcePage = informationSourcesPage.clickAddInformationSource();
@@ -97,12 +88,7 @@ public class InformationSourcesListTest {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         InformationSourcesPage informationSourcesPage = mainMenuPage.openInformationSource();
         AddInformationSourcePage addInformationSource = informationSourcesPage.clickAddInformationSource();
@@ -139,12 +125,7 @@ public class InformationSourcesListTest {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         InformationSourcesPage informationSourcesPage = mainMenuPage.openInformationSource();
         AddInformationSourcePage addInformationSource = informationSourcesPage.clickAddInformationSource();

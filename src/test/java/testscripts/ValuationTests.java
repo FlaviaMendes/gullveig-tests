@@ -1,6 +1,7 @@
 package testscripts;
 
 import helpers.BrowserHelper;
+import helpers.UserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -16,12 +17,7 @@ public class ValuationTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationListPage valuationListPage = mainMenuPage.openValuationPage();
         AddValuationPage addValuationPage = valuationListPage.clickAddValuation();
@@ -60,12 +56,7 @@ public class ValuationTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         ValuationListPage valuationListPage = mainMenuPage.openValuationPage();
         AddValuationPage addValuationPage = valuationListPage.clickAddValuation();
@@ -102,4 +93,5 @@ public class ValuationTests {
 
 
     }
+
 }

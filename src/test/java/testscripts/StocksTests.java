@@ -1,6 +1,7 @@
 package testscripts;
 
 import helpers.BrowserHelper;
+import helpers.UserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -24,12 +25,7 @@ public class StocksTests {
 
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         StocksListPage stocksListPage = mainMenuPage.openStocksPage();
         AddStockPage addStockPage = stocksListPage.clickAddStock();
@@ -54,12 +50,7 @@ public class StocksTests {
     public void DoNotAllowSameStockTwice() {
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         StocksListPage stocksListPage = mainMenuPage.openStocksPage();
         AddStockPage addStockPage = stocksListPage.clickAddStock();
@@ -91,12 +82,7 @@ public class StocksTests {
     public void EditTickerStock(){
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         StocksListPage stocksListPage = mainMenuPage.openStocksPage();
         AddStockPage addStockPage = stocksListPage.clickAddStock();
@@ -129,12 +115,7 @@ public class StocksTests {
     public void EditCompanyStock(){
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         StocksListPage stocksListPage = mainMenuPage.openStocksPage();
         AddStockPage addStockPage = stocksListPage.clickAddStock();
@@ -167,12 +148,7 @@ public class StocksTests {
     public void DeleteStock(){
         WebDriver driver = BrowserHelper.openBrowser();
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-
-        loginPage.username("admin");
-        loginPage.password("1234qwer");
-        MainMenuPage mainMenuPage = loginPage.executeLogin();
+        MainMenuPage mainMenuPage = UserHelper.executeLogin(driver, "admin", "1234qwer");
 
         StocksListPage stocksListPage = mainMenuPage.openStocksPage();
         AddStockPage addStockPage = stocksListPage.clickAddStock();
