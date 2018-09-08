@@ -1,5 +1,6 @@
 package testscripts;
 
+import helpers.BrowserHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -13,42 +14,10 @@ import java.util.UUID;
 
 public class CompaniesTests {
 
-    private enum Browser {
-        FIREFOX, CHROME
-    }
-
-    public FirefoxDriver openFirefox() {
-        File file = new File("geckodriver.exe");
-        System.setProperty("webdriver.gecko.driver", file.getAbsolutePath());
-
-        return new FirefoxDriver();
-    }
-
-    public WebDriver openChrome() {
-        File file = new File("chromedriver.exe");
-        System.setProperty("webdriver.chrome.drive", file.getAbsolutePath());
-
-        return new ChromeDriver();
-    }
-
-    public WebDriver openBrowser() {
-        String browserEnv = System.getenv("browser");
-        Browser browserChosen = Browser.valueOf(browserEnv.toUpperCase());
-
-        switch (browserChosen) {
-            case CHROME:
-                return openChrome();
-            case FIREFOX:
-                return openFirefox();
-            default:
-                return openChrome();
-        }
-    }
-
-    @Test
+   @Test
     public void CreateNewCompany() {
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -84,7 +53,7 @@ public class CompaniesTests {
     @Test
     public void DoNotAllowSameCompanyTwice(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -133,7 +102,7 @@ public class CompaniesTests {
     @Test
     public void EditCompanies(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -177,7 +146,7 @@ public class CompaniesTests {
     @Test
     public void EditSector(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
@@ -217,7 +186,7 @@ public class CompaniesTests {
     @Test
     public void DeleteCompanies(){
 
-        WebDriver driver = openBrowser();
+        WebDriver driver = BrowserHelper.openBrowser();
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
